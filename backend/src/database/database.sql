@@ -25,3 +25,6 @@ create table historico_tareas (
 
 alter table historico_tareas
 add column completada boolean;
+
+alter table usuarios
+add column password text not null;
