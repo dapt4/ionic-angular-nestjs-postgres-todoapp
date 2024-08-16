@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { PostgresModule } from 'nest-postgres';
 import { JwtModule } from '@nestjs/jwt';
+import { LoggerMiddleware } from './middleware/auth';
+import { TodoController } from './controllers/todo.controller';
 
 @Module({
   imports: [
@@ -20,7 +22,11 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     JwtModule.register({ secret: process.env.ENV_SECRET }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, TodoController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('todo');
+  }
+}

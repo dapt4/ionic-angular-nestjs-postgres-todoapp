@@ -26,4 +26,16 @@ export class AppService {
       return "User and password don't match";
     }
   }
+
+  public async auth(username: string, password: string) {
+    const user = await this.pg.query(
+      'INSERT INTO (email, password) VALUES ($1, $2)',
+      [username, password],
+    );
+    if (user.rows.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
