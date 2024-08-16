@@ -6,6 +6,7 @@ import { PostgresModule } from 'nest-postgres';
 import { JwtModule } from '@nestjs/jwt';
 import { LoggerMiddleware } from './middleware/auth';
 import { TodoController } from './controllers/todo.controller';
+import { TodoService } from './services/todo/todo.service';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { TodoController } from './controllers/todo.controller';
     JwtModule.register({ secret: process.env.ENV_SECRET }),
   ],
   controllers: [AppController, TodoController],
-  providers: [AppService],
+  providers: [AppService, TodoService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

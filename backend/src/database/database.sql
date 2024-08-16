@@ -1,30 +1,32 @@
 CREATE DATABASE nestjstodo;
 
-create table usuarios (
+drop table if exists task_history;
+
+drop table if exists tasks;
+
+drop table if exists users;
+
+create table users (
   id bigint primary key generated always as identity,
-  nombre text not null,
-  email text not null unique
+  name text not null,
+  email text not null unique,
+  password text not null
 );
 
-create table tareas (
+create table tasks (
   id bigint primary key generated always as identity,
-  usuario_id bigint references usuarios (id),
-  titulo text not null,
-  descripcion text,
-  fecha_creacion timestamp with time zone default now(),
-  completada boolean default false
+  user_id bigint references users (id),
+  title text not null,
+  description text,
+  created_at timestamp with time zone default now(),
+  completed boolean default false
 );
 
-create table historico_tareas (
+create table task_history (
   id bigint primary key generated always as identity,
-  tarea_id bigint references tareas (id),
-  fecha timestamp with time zone default now(),
-  accion text not null,
-  detalles text
+  task_id bigint references tasks (id),
+  date timestamp with time zone default now(),
+  action text not null,
+  details text,
+  completed boolean
 );
-
-alter table historico_tareas
-add column completada boolean;
-
-alter table usuarios
-add column password text not null;

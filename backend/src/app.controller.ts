@@ -1,25 +1,20 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AuthBody, User } from './types/services';
 
 @Controller('auth')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('login')
-  public auth(
-    @Body('username') username: string,
-    @Body('password') password: string,
-  ) {
+  public auth(@Body('authBody') body: AuthBody) {
     return this.appService.login({
-      username: username,
-      password: password,
+      username: body.username,
+      password: body.password,
     });
   }
   @Post('register')
-  public register(
-    @body('username') username: string,
-    @Body('password') password: string,
-  ) {
-    return this.appService.auth(username, password)
+  public register(@Body() body: User) {
+    return this.appService.register(body);
   }
 }

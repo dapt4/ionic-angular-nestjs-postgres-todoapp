@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Client } from 'pg';
 import { InjectClient } from 'nest-postgres';
-import { AuthBody } from './types/services';
+import { AuthBody, AuthRes, RegisterRes, User } from './types/services';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 @Injectable()
@@ -10,9 +10,9 @@ export class AppService {
     @InjectClient() private readonly pg: Client,
     private readonly jwtService: JwtService,
   ) {}
-  public async login(authBody: AuthBody): Promise<string> {
+  public async login(authBody: AuthBody): Promise<AuthRes | string> {
     const user = await this.pg.query(
-      'SELECT * FROM usuarios WHERE email = $1 and password = $2',
+      'SELECT * FROM users WHERE email = $1 and password = $2',
       [authBody.username, authBody.password],
     );
     if (user.rows.length > 0) {
@@ -21,21 +21,27 @@ export class AppService {
         userid: user.rows[0].id,
       };
       const options: JwtSignOptions = { expiresIn: '1h' };
-      return this.jwtService.sign(payload, options);
+      const token = this.jwtService.sign(payload, options);
+      const response: AuthRes = { token };
+      return response;
     } else {
       return "User and password don't match";
     }
   }
 
-  public async auth(username: string, password: string) {
-    const user = await this.pg.query(
-      'INSERT INTO (email, password) VALUES ($1, $2)',
-      [username, password],
-    );
-    if (user.rows.length > 0) {
-      return true;
-    } else {
-      return false;
+  public async register(body: User): Promise<RegisterRes> {
+    try {
+      const user = await this.pg.query(
+        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
+        [body.name, body.email, body.password],
+      );
+      if (user.rowCount > 0) {
+        return { result: 'done' };
+      } else {
+        return { result: 'error' };
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }
