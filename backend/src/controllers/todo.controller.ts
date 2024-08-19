@@ -1,6 +1,6 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TodoService } from 'src/services/todo/todo.service';
-import { Todo } from 'src/types/todo';
+import { SuccessRes, Todo } from 'src/types/todo';
 
 @Controller('todo')
 export class TodoController {
@@ -11,22 +11,22 @@ export class TodoController {
     return todos;
   }
   @Get('one/:id')
-  public getOne(@Param() params: any): string {
-    return `the id is ${params.id}`;
+  public async getOne(@Param('id') id: string): Promise<Todo> {
+    const todo: Todo = await this.todoService.getOne(id);
+    return todo;
   }
 
-  @Post('new/')
-  public newTodo(): string {
-    return 'new todo';
+  @Post('new')
+  public async newTodo(@Body() body: Todo): Promise<SuccessRes> {
+    return await this.todoService.newTodo(body);
   }
 
-  @Put('edit/:id')
-  public editOne(@Param() params: any): string {
-    return `the id is ${params.id}`;
-  }
-
-  @Delete('del/:id')
-  public deleteOne(@Param() params: any): string {
-    return `the id is ${params.id}`;
-  }
+  // @Put('edit/:id')
+  // public editOne(@Param() params: any): string {
+  //   return `the id is ${params.id}`;
+  // }
+  // @Delete('del/:id')
+  // public deleteOne(@Param() params: any): string {
+  //   return `the id is ${params.id}`;
+  // }
 }

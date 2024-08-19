@@ -28,6 +28,6 @@ import { TodoService } from './services/todo/todo.service';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('todo');
+    consumer.apply(LoggerMiddleware).forRoutes('todo'); // cambiar por otro valor si no quieres jwt
   }
 }
