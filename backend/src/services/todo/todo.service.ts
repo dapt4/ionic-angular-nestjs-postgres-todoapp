@@ -1,11 +1,16 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Client } from 'pg';
 import { InjectClient } from 'nest-postgres';
-import { SuccessRes, Todo } from 'src/types/todo';
+import { EditBody, SuccessRes, Todo } from 'src/types/todo';
+import { REQUEST } from '@nestjs/core';
+import { CustomRequest } from 'src/types/middleware';
 
 @Injectable()
 export class TodoService {
-  constructor(@InjectClient() private readonly pg: Client) {}
+  constructor(
+    @InjectClient() private readonly pg: Client,
+    @Inject(REQUEST) private req: CustomRequest,
+  ) {}
 
   public async getAll(): Promise<Todo[]> {
     const todos = await this.pg.query('SELECT * FROM tasks;');
@@ -13,10 +18,9 @@ export class TodoService {
   }
 
   public async getOne(id: string): Promise<Todo> {
-    const todo = await this.pg.query<Todo>(
-      'SELECT * FROM tasks WHERE id = $1;',
-      [id],
-    );
+    const todo = await this.pg.query('SELECT * FROM tasks WHERE id = $1;', [
+      id,
+    ]);
     return todo.rows[0];
   }
 
@@ -29,11 +33,23 @@ export class TodoService {
     if (result.rowCount === 1) return { success: true };
     else return { success: false };
   }
-  //
-  // @Put('edit/:id')
-  // public editOne(@Param() params: any): string {
-  //   return `the id is ${params.id}`;
-  // }
+
+  public async editTodo(
+    id: string,
+    { title, description, completed }: EditBody,
+  ): Promise<SuccessRes> {
+    const query = `
+      UPDATE tasks
+      SET title = COALESCE($1, title),
+          description = COALESCE($2, description),
+          completed = COALESCE($3, completed)
+      WHERE id = $4 AND user_id = $5;
+    `;
+    const values = [title, description, completed, id, this.req.userid || '2'];
+    const result = await this.pg.query(query, values);
+    if (result.rowCount === 1) return { success: true };
+    if (result.rowCount === 0) return { success: false };
+  }
   //
   // @Delete('del/:id')
   // public deleteOne(@Param() params: any): string {
