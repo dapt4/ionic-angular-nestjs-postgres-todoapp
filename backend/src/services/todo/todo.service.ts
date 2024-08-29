@@ -50,9 +50,15 @@ export class TodoService {
     if (result.rowCount === 1) return { success: true };
     if (result.rowCount === 0) return { success: false };
   }
-  //
-  // @Delete('del/:id')
-  // public deleteOne(@Param() params: any): string {
-  //   return `the id is ${params.id}`;
-  // }
+
+  public async deleteTodo(id: string): Promise<SuccessRes> {
+    try {
+      const query = `DELETE FROM tasks WHERE id = $1;`;
+      const result = await this.pg.query(query, [id]);
+      if (result.rowCount === 1) return { success: true };
+      if (result.rowCount === 0) return { success: false };
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }

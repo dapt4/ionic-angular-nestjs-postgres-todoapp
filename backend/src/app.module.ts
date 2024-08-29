@@ -28,6 +28,6 @@ import { TodoService } from './services/todo/todo.service';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('todo_off'); // cambiar por otro valor si no quieres jwt
+    consumer.apply(LoggerMiddleware).forRoutes('todo');
   }
 }
