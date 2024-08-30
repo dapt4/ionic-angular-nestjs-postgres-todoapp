@@ -1,4 +1,4 @@
-CREATE DATABASE nestjstodo;
+CREATE DATABASE railway;
 
 drop table if exists task_history;
 

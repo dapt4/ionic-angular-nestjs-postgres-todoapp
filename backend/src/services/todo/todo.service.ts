@@ -45,7 +45,7 @@ export class TodoService {
           completed = COALESCE($3, completed)
       WHERE id = $4 AND user_id = $5;
     `;
-    const values = [title, description, completed, id, this.req.userid || '2'];
+    const values = [title, description, completed, id, this.req.userid];
     const result = await this.pg.query(query, values);
     if (result.rowCount === 1) return { success: true };
     if (result.rowCount === 0) return { success: false };
