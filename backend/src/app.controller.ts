@@ -7,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('login')
-  public auth(@Body('authBody') body: AuthBody) {
+  public auth(@Body() body: AuthBody) {
     return this.appService.login({
       username: body.username,
       password: body.password,
