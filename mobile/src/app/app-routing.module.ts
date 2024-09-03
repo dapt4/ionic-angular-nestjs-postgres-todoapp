@@ -13,8 +13,13 @@ const routes: Routes = [
   },
   {
     path: 'recover',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
+    loadChildren: () => import('./recover/recover.module').then( m => m.RecoverModule)
   },
+  {
+    path:'pages',
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
+    canActivate: []
+  }
 ];
 
 @NgModule({
