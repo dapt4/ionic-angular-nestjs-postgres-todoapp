@@ -1,3 +1,5 @@
 backend/.git
+backend/session.nvim
 mobile/.git
+mobile/session.nvim
 mobile/src/app/config/config.ts
