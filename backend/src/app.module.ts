@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { LoggerMiddleware } from './middleware/auth';
 import { TodoController } from './controllers/todo.controller';
 import { TodoService } from './services/todo/todo.service';
+import { CorsMiddleware } from '@nest-middlewares/cors';
 
 @Module({
   imports: [
@@ -29,5 +30,6 @@ import { TodoService } from './services/todo/todo.service';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('todo');
+    consumer.apply(CorsMiddleware).forRoutes('');
   }
 }

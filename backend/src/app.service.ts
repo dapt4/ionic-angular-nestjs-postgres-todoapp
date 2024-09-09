@@ -40,8 +40,9 @@ export class AppService {
       } else {
         return { result: 'error' };
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      return { result: 'error' };
     }
   }
 }

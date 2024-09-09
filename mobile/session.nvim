@@ -13,20 +13,30 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +37 src/global.scss
-badd +44 src/polyfills.ts
-badd +6 src/theme/variables.scss
-badd +16 src/app/app-routing.module.ts
-badd +12 src/app/recover/recover.module.ts
-badd +7 src/app/auth.guard.ts
+badd +4 src/app/login/login.component.html
+badd +1 .browserslistrc
+badd +11 src/app/login/login.component.ts
+badd +1 src/app/login/login.component.scss
+badd +1 src/app/login/login.module.ts
+badd +12 src/app/login/login-routing.module.ts
+badd +18 src/app/new-user/new-user.component.html
+badd +34 src/app/new-user/new-user.component.scss
+badd +14 src/app/new-user/new-user.component.ts
+badd +37 src/app/services/auth.service.ts
+badd +0 src/types/login.ts
+badd +3 src/types/newUser.ts
+badd +0 src/app/config/config.ts
 argglobal
 %argdel
 set stal=2
 tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit src/app/app-routing.module.ts
+edit src/app/new-user/new-user.component.html
 argglobal
-balt src/app/app-routing.module.ts
+balt src/app/new-user/new-user.component.html
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -34,19 +44,58 @@ setlocal fdi=#
 setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
-setlocal nofen
+setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 24 - ((23 * winheight(0) + 17) / 35)
+let s:l = 18 - ((17 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 24
+keepjumps 18
+normal! 033|
+tabnext
+edit src/app/new-user/new-user.component.scss
+argglobal
+balt src/app/new-user/new-user.component.scss
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 35 - ((34 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 35
+normal! 02|
+tabnext
+edit src/app/new-user/new-user.component.ts
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 26 - ((25 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 26
 normal! 0
 tabnext
-edit src/app/auth.guard.ts
+edit src/app/services/auth.service.ts
 argglobal
-balt src/app/auth.guard.ts
+balt src/app/new-user/new-user.component.ts
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -54,16 +103,36 @@ setlocal fdi=#
 setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
-setlocal nofen
+setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 2 - ((1 * winheight(0) + 17) / 35)
+let s:l = 40 - ((39 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 2
-normal! 0
-tabnext 2
+keepjumps 40
+normal! 019|
+tabnext
+edit src/types/newUser.ts
+argglobal
+balt src/types/newUser.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 3 - ((2 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 3
+normal! 07|
+tabnext 1
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -77,6 +146,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

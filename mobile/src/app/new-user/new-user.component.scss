@@ -1,3 +1,4 @@
+
 .card {
   display: block;
   width: 90%;
@@ -30,7 +31,7 @@
     --background: var(--c-primario);
     --color: var(--c-quinario);
   }
-  &-signup{
+  &-signin{
     display: block;
     width: fit-content;
     margin: 4px auto;
